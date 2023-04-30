@@ -1,8 +1,6 @@
 import os
 from uuid import uuid4
 
-os.system('fuser -k 5000/tcp')
-
 from flask import Flask, request, render_template, send_from_directory
 
 
