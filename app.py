@@ -1,6 +1,8 @@
 import os
 from uuid import uuid4
 
+os.system('fuser -k 5000/tcp')
+
 from flask import Flask, request, render_template, send_from_directory
 
 
@@ -56,10 +58,15 @@ def upload():
         test_image = load_img('images/' + filename, target_size=(64, 64))
         # test_image = image.load_img("/content/sample_data/train/cat.1041.jpg", target_size=(128, 128))
         test_image = img_to_array(test_image)
+        test_image /= 255
         test_image = np.expand_dims(test_image, axis=0)
+        
         result = new_modell.predict(test_image)
         ans = np.argmax(result, axis=1)
-        if ans==1:
+        print(result[0][0])
+        
+        
+        if result[0][0] < 0.5:
             prediction="dog"
         else:
             prediction = "cat"
